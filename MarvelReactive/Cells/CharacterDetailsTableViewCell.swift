@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 import UIKit
 
 class CharacterDetailsTableViewCell: UITableViewCell {
@@ -14,6 +15,7 @@ class CharacterDetailsTableViewCell: UITableViewCell {
     private let button = UIButton()
     private var characterDescriptionURL: URL?
     let descriptionLabel: UILabel = UILabel()
+    private let disposeBag = DisposeBag()
     
     static let reuseIdentifier = "CharacterDetails"
     
@@ -24,6 +26,12 @@ class CharacterDetailsTableViewCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bind(to viewModel: CharacterDetailsCellViewModel) {
+        viewModel.name.drive(nameLabel.rx.text).disposed(by: disposeBag)
+        viewModel.description.drive(descriptionLabel.rx.text).disposed(by: disposeBag)
+        viewModel.image.drive(characterImageView.rx.image).disposed(by: disposeBag)
     }
     
     private func setupViews() {
@@ -61,14 +69,6 @@ class CharacterDetailsTableViewCell: UITableViewCell {
         button.backgroundColor = .blue
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-    }
-    
-    func update(with character: MarvelCharacter) {
-        nameLabel.text = character.name
-        descriptionLabel.text = character.description == "" ? "No Description" : character.description
-        characterDescriptionURL = character.websiteURL
-//        characterImageView.loadImageFromUrl(urlString: character.thumbnail.full)
-        updateConstraints()
     }
     
     @objc func buttonTapped() {

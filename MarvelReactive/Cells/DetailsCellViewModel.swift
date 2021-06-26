@@ -9,13 +9,12 @@ import RxSwift
 import RxCocoa
 import UIKit
 
-final class CharacterCellViewModel {
+final class DetailsCellViewModel {
     let name: Driver<String>
-    let description: Driver<String>
     let image: Driver<UIImage?>
     
     init(characters: MarvelCharacter, imageProvider: ImageProviderProtocol = ImageProvider()) {
-        name = characters.name
+        name = .just(characters.name)
         image = imageProvider.loadImageFromUrl(url: URL(string: characters.thumbnail.full))
             .asDriver(onErrorJustReturn: nil)
     }

@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+protocol CoordinatorFactoryProtocol {
+    func makeHomeViewCoordinator(router: Router) -> Coordinator
+    func makeFavouritesCoordinator(router: Router) -> Coordinator
+}
+
+final class CoordinatorFactory: CoordinatorFactoryProtocol {
+    func makeHomeViewCoordinator(router: Router) -> Coordinator {
+        HomeViewCoordinator(router: router)
+    }
+    
+    func makeFavouritesCoordinator(router: Router) -> Coordinator {
+        FavouritesCoordinator(router: router)
+    }
+}
